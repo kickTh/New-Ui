@@ -637,12 +637,10 @@ function Library:create(options)
 		Size = UDim2.new(0.2, 0, 0, 10),
 		Font = Enum.Font.SourceSans,
 		Theme = {TextColor3 = "Tertiary"},
-	    Text = "Executor Time:" .. timezone ..":".. datetime .."〔 " .. code .." 〕",
-		TextScaled = true,
+	    Text = "",
 		TextSize = 14,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	
 
 	local homeButton = tabButtons:object("TextButton", {
 		Name = "hehehe siuuuuuuuuu",
