@@ -1,5 +1,19 @@
 
-do local ui =  game:GetService("CoreGui").RobloxGui.Modules:FindFirstChild("NERO X") if ui then ui:Destroy() end end --เรียงแบบสวยงาม
+do local CoreGui =  game:GetService("CoreGui"):FindFirstChild("Nero")
+    if CoreGui then 
+        CoreGui:Destroy() 
+    elseif CoreGui then 
+        local CheckCoreGui =  game.CoreGui:FindFirstChild("Nero").Enabled = not game.CoreGui:FindFirstChild("Nero").Enabled
+        if CheckCoreGui then
+            CoreGui:Destroy()
+        elseif not CheckCoreGui then
+            local CoreGui = nil
+            local CheckCoreGu = nil
+            return not CoreGui
+            return not CheckCoreGu
+        end
+    end
+end
 
 
 -- // variables
@@ -146,7 +160,7 @@ function library:new(props)
 	local screen = utility.new(
 		"ScreenGui",
 		{
-			Name = "NERO X",
+			Name = "Nero",
 			DisplayOrder = 9999,
 			ResetOnSpawn = false,
 			ZIndexBehavior = "Global",
@@ -1100,70 +1114,126 @@ function pages:openpage()
 end
 --
 function pages:section(props)
-	local Pageframe = Instance.new("Frame")
-			Pageframe.Name = "Pageframe"
-			Pageframe.Parent = ScrollingFrame_Pagefrist
-			Pageframe.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-			Pageframe.BorderColor3 = Color3.fromRGB(15, 15, 15)
-			Pageframe.Position = UDim2.new(0, 0, -1.12658226, 0)
-			Pageframe.Size = UDim2.new(0, 240, 0, 328)
-
-			local ScrollingFrame_Pageframe = Instance.new("ScrollingFrame")
-			ScrollingFrame_Pageframe.Name = "ScrollingFrame_Pageframe"
-			ScrollingFrame_Pageframe.Parent = Pageframe
-			ScrollingFrame_Pageframe.Active = true
-			ScrollingFrame_Pageframe.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-			ScrollingFrame_Pageframe.BackgroundTransparency = 1.000
-			ScrollingFrame_Pageframe.BorderColor3 = Color3.fromRGB(27, 42, 53)
-			ScrollingFrame_Pageframe.BorderSizePixel = 0
-			ScrollingFrame_Pageframe.Size = UDim2.new(0, 240, 0, 178)
-			ScrollingFrame_Pageframe.ScrollBarThickness = 3
-			ScrollingFrame_Pageframe.ClipsDescendants = true
-
-			local UIPadding_Pageframe = Instance.new("UIPadding")
-			local UIListLayout_Pageframe = Instance.new("UIListLayout")
-
-			UIPadding_Pageframe.Name = "UIPadding_Pageframe"
-			UIPadding_Pageframe.Parent = ScrollingFrame_Pageframe
-			UIPadding_Pageframe.PaddingLeft = UDim.new(0, 15)
-			UIPadding_Pageframe.PaddingTop = UDim.new(0, 10)
-
-			UIListLayout_Pageframe.Name = "UIListLayout_Pageframe"
-			UIListLayout_Pageframe.Parent = ScrollingFrame_Pageframe
-			UIListLayout_Pageframe.SortOrder = Enum.SortOrder.LayoutOrder
-			UIListLayout_Pageframe.Padding = UDim.new(0, 7)
-
-			local Pageframe_UICorner = Instance.new("UICorner")
-
-			Pageframe_UICorner.Name = "Pageframe_UICorner"
-			Pageframe_UICorner.Parent = Pageframe
-			Pageframe_UICorner.CornerRadius = UDim.new(0, 8)
-
-			local Pageframe_UIStroke = Instance.new("UIStroke")
-
-			Pageframe_UIStroke.Thickness = 1
-			Pageframe_UIStroke.Name = ""
-			Pageframe_UIStroke.Parent = Pageframe
-			Pageframe_UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
-			Pageframe_UIStroke.LineJoinMode = Enum.LineJoinMode.Round
-			Pageframe_UIStroke.Color = Color3.fromRGB(0,0,0)
-			Pageframe_UIStroke.Transparency = 0
-
-			UIListLayout_Pageframe:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
-				ScrollingFrame_Pageframe.CanvasSize = UDim2.new(0,0,0,UIListLayout_Pageframe.AbsoluteContentSize.Y + 120 )
+	-- // properties
+	local name = props.name or props.Name or props.page or props.Page or props.pagename or props.Pagename or props.PageName or props.pageName or "new ui"
+	local side = props.side or props.Side or props.sectionside or props.Sectionside or props.SectionSide or props.sectionSide or "left"
+	local size = props.size or props.Size or props.yaxis or props.yAxis or props.YAxis or props.Yaxis or 200
+	side = side:lower()
+	-- // variables
+	local section = {}
+	-- // main
+	local sectionholder = utility.new(
+		"Frame",
+		{
+			BackgroundColor3 = Color3.fromRGB(24, 24, 24),
+			BorderColor3 = Color3.fromRGB(56, 56, 56),
+			BorderMode = "Inset",
+			BorderSizePixel = 1,
+			Size = UDim2.new(1,0,0,size),
+			Parent = self[side]
+		}
+	)
+	--
+	local outline = utility.new(
+		"Frame",
+		{
+			BackgroundColor3 = Color3.fromRGB(24, 24, 24),
+			BorderColor3 = Color3.fromRGB(12, 12, 12),
+			BorderMode = "Inset",
+			BorderSizePixel = 1,
+			Size = UDim2.new(1,0,1,0),
+	        Position = 	TweenService:Create(TweenInfo.new(.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(24, 24, 24)}):Play()
+			Parent = sectionholder
+		}
+	)
+	--
+	local TextButton = utility.new(
+		"TextButton",
+		{
+			AnchorPoint = Vector2.new(0.5,0),
+			BackgroundColor3 = Color3.fromRGB(24, 24, 24),
+			BorderSizePixel = 0,
+			Size = UDim2.new(1,0,1,0),
+			TextButton.Font = Enum.Font.SourceSans
+			Position = 	TweenService:Create(TweenInfo.new(.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundColor3 = Color3.fromRGB(24, 24, 24)}):Play()
+			Parent = TextButton
+            TextButton.MouseButton1Click:Connect(
+            function()	
+				TextButton.BackgroundColor3 = Color3.fromRGB(24, 24, 24),
 			end)
-
-			UIGridLayout_Pagefrist:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
-				ScrollingFrame_Pagefrist.CanvasSize = UDim2.new(0,0,0,UIGridLayout_Pagefrist.AbsoluteContentSize.Y + 50 )
-			end)
-
-			game:GetService("RunService").Stepped:Connect(function ()
-				pcall(function ()
-					ScrollingFrame_Menubar.CanvasSize = UDim2.new(0,  UIListLayout_Menubar.AbsoluteContentSize.X, 0,0)
-					ScrollingFrame_Pageframe.CanvasSize = UDim2.new(0,0,0,UIListLayout_Pageframe.AbsoluteContentSize.Y +20 )
-					ScrollingFrame_Pagefrist.CanvasSize = UDim2.new(0,0,0,UIGridLayout_Pagefrist.AbsoluteContentSize.Y + 20)
-				end)
-			end)
+		}
+	)
+    --
+	local color = utility.new(
+		"Frame",
+		{
+			AnchorPoint = Vector2.new(0.5,0),
+			BackgroundColor3 = self.library.theme.accent,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1,-2,0,1),
+			Position = UDim2.new(0.5,0,0,0),
+			Parent = outline
+		}
+	)
+	table.insert(self.library.themeitems["accent"]["BackgroundColor3"],color)
+	--
+	local content = utility.new(
+		"Frame",
+		{
+			AnchorPoint = Vector2.new(0.5,1),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1,-12,1,-25),
+			Position = UDim2.new(0.5,0,1,-5),
+			Parent = outline
+		}
+	)
+	--
+	local title = utility.new(
+		"TextLabel",
+		{
+			BackgroundTransparency = 1,
+			Size = UDim2.new(1,-5,0,20),
+			Position = UDim2.new(0,5,0,0),
+			Font = self.library.font,
+			Text = name,
+			TextColor3 = Color3.fromRGB(255,255,255),
+			TextSize = self.library.textsize,
+			TextStrokeTransparency = 0,
+			TextXAlignment = "Left",
+			Parent = outline
+		}
+	)
+	--
+	utility.new(
+		"UIListLayout",
+		{
+			FillDirection = "Vertical",
+			Padding = UDim.new(0,5),
+			Parent = content
+		}
+	)
+	-- // section tbl
+	section = {
+		["library"] = self.library,
+		["sectionholder"] = sectionholder,
+		["TextButton"] = TextButton,
+		["color"] = color,
+		["content"] = content,
+		["pointers"] = {}
+	}
+	--
+	local pointer = props.pointer or props.Pointer or props.pointername or props.Pointername or props.PointerName or props.pointerName or nil
+	--
+	if pointer then
+		if self.pointers then
+			self.pointers[tostring(pointer)] = section.pointers
+		end
+	end
+	--
+	self.library.labels[#self.library.labels+1] = title
+	-- // metatable indexing + return
+	setmetatable(section, sections)
 	return section
 end
 --
