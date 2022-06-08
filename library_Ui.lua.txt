@@ -4,7 +4,7 @@ do
     if CoreGui then 
         CoreGui:Destroy() 
     elseif CoreGui then 
-        local CheckCoreGui =  game.CoreGui:FindFirstChild("Nero").Enabled = not game.CoreGui:FindFirstChild("Nero").Enabled
+        local CheckCoreGui = not game.CoreGui:FindFirstChild("Nero").Enabled
         if CheckCoreGui then
             CoreGui:Destroy()
         elseif not CheckCoreGui then
