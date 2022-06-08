@@ -1,5 +1,7 @@
 
 do
+    local CoreGui = {}
+    local CheckCoreGui = {}
     local CoreGui =  game:GetService("CoreGui"):FindFirstChild("Nero")
     if CoreGui then 
         CoreGui:Destroy() 
@@ -10,8 +12,6 @@ do
         elseif not CheckCoreGui then
             local CoreGui = nil
             local CheckCoreGu = nil
-            return not CoreGui
-            return not CheckCoreGu
         end
     end
 end
