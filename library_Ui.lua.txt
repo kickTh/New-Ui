@@ -1,20 +1,24 @@
 
-do
+
+coroutine.wrap(
+	function()
+	do
     local CoreGui = {}
     local CheckCoreGui = {}
-    local CoreGui =  game:GetService("CoreGui"):FindFirstChild("Nero")
-    if CoreGui then 
-        CoreGui:Destroy() 
-    elseif CoreGui then 
+    local CoreGui = game:GetService("CoreGui"):FindFirstChild("Nero")
+        if CoreGui then 
+         CoreGui:Destroy() 
+        elseif CoreGui then 
         local CheckCoreGui = not game.CoreGui:FindFirstChild("Nero").Enabled
-        if CheckCoreGui then
+            if CheckCoreGui then
             CoreGui:Destroy()
-        elseif not CheckCoreGui then
-            local CoreGui = nil
-            local CheckCoreGu = nil
+            elseif not CoreGui and CheckCoreGuithen then
+                 local CoreGui = nil
+                 local CheckCoreGu = nil
+            end
         end
     end
-end
+end)()
 
 
 -- // variables
@@ -1547,6 +1551,39 @@ function multisections:section(props)
 	return mssection
 end
 --
+function section:Label(labelInfo)
+	    local info = labelInfo or {}
+		local label = {}
+		local contentHolder = utility:Create({Type = "Frame", Properties = {
+	BackgroundTransparency = 1,
+	BorderSizePixel = 0,
+	Parent = sectionContentHolder,
+	Size = UDim2.new(1, 0, 0, 14)
+}})
+local labelTitle = utility:Create({Type = "TextLabel", Properties = {
+	AnchorPoint = Vector2.new(0, 0),
+	BackgroundTransparency = 1,
+	BorderSizePixel = 0,
+	Parent = contentHolder,
+	Size = UDim2.new(1, -(info.Offset or 36), 1, 0),
+	Position = UDim2.new(0, info.Offset or 36, 0, 0),
+	Font = "Code",
+	RichText = true,
+	Text = info.Name or info.name or info.Text or info.text or "new label",
+	TextColor3 = Color3.fromRGB(255, 255, 255),
+	TextStrokeTransparency = 0.5,
+	TextSize = 13,
+	TextXAlignment = "Left"
+}})
+	function label:Remove()
+		contentHolder:Remove()
+		label = nil
+		section:Update()
+	end
+    section:Update()
+	return label
+end
+
 function sections:toggle(props)
 	-- // properties
 	local name = props.name or props.Name or props.page or props.Page or props.pagename or props.Pagename or props.PageName or props.pageName or "new ui"
@@ -1788,218 +1825,182 @@ function sections:button(props)
 	return button
 end
 --
-function sections:slider(props)
-	-- // properties
-	local name = props.name or props.Name or props.page or props.Page or props.pagename or props.Pagename or props.PageName or props.pageName or "new ui"
-	local def = props.def or props.Def or props.default or props.Default or 0
-	local max = props.max or props.Max or props.maximum or props.Maximum or 100
-	local min = props.min or props.Min or props.minimum or props.Minimum or 0
-	local rounding = props.rounding or props.Rounding or props.round or props.Round or props.decimals or props.Decimals or false
-	local ticking = props.tick or props.Tick or props.ticking or props.Ticking or false
-	local measurement = props.measurement or props.Measurement or props.digit or props.Digit or props.calc or props.Calc or ""
-	local callback = props.callback or props.callBack or props.CallBack or props.Callback or function()end
-	def = math.clamp(def,min,max)
-	-- // variables
-	local slider = {}
-	-- // main
-	local sliderholder = utility.new(
-		"Frame",
-		{
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1,0,0,25),
-			Parent = self.content
-		}
-	)
-	--
-	local outline = utility.new(
-		"Frame",
-		{
-			BackgroundColor3 = Color3.fromRGB(24, 24, 24),
-			BorderColor3 = Color3.fromRGB(12, 12, 12),
-			BorderMode = "Inset",
-			BorderSizePixel = 1,
-			Size = UDim2.new(1,0,0,12),
-			Position = UDim2.new(0,0,0,15),
-			Parent = sliderholder
-		}
-	)
-	--
-	local outline2 = utility.new(
-		"Frame",
-		{
-			BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-			BorderColor3 = Color3.fromRGB(56, 56, 56),
-			BorderMode = "Inset",
-			BorderSizePixel = 1,
-			Size = UDim2.new(1,0,1,0),
-			Parent = outline
-		}
-	)	
-	--
-	local value = utility.new(
-		"TextLabel",
-		{
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1,0,0,2),
-			Position = UDim2.new(0,0,0.5,0),
-			Font = self.library.font,
-			Text = def..measurement.."/"..max..measurement,
-			TextColor3 = Color3.fromRGB(255,255,255),
-			TextSize = self.library.textsize,
-			TextStrokeTransparency = 0,
-			ZIndex = 3,
-			Parent = outline
-		}
-	)
-	--
-	local color = utility.new(
-		"Frame",
-		{
-			BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-			BorderSizePixel = 0,
-			Size = UDim2.new(1,0,1,0),
-			Parent = outline2
-		}
-	)
-	--
-	utility.new(
-		"UIGradient",
-		{
-			Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(199, 191, 204)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))},
-			Rotation = 90,
-			Parent = color
-		}
-	)
-	--
-	local slide = utility.new(
-		"Frame",
-		{
-			BackgroundColor3 = self.library.theme.accent,
-			BorderSizePixel = 0,
-			Size = UDim2.new((1 / color.AbsoluteSize.X) * (color.AbsoluteSize.X / (max - min) * (def - min)),0,1,0),
-			ZIndex = 2,
-			Parent = outline
-		}
-	)
-	table.insert(self.library.themeitems["accent"]["BackgroundColor3"],slide)
-	--
-	utility.new(
-		"UIGradient",
-		{
-			Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(199, 191, 204)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))},
-			Rotation = 90,
-			Parent = slide
-		}
-	)
-	--
-	local sliderbutton = utility.new(
-		"TextButton",
-		{
-			AnchorPoint = Vector2.new(0,0),
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1,0,1,0),
-			Position = UDim2.new(0,0,0,0),
-			Text = "",
-			Parent = sliderholder
-		}
-	)
-	--
-	local title = utility.new(
-		"TextLabel",
-		{
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1,0,0,15),
-			Position = UDim2.new(0,0,0,0),
-			Font = self.library.font,
-			Text = name,
-			TextColor3 = Color3.fromRGB(255,255,255),
-			TextSize = self.library.textsize,
-			TextStrokeTransparency = 0,
-			TextXAlignment = "Left",
-			Parent = sliderholder
-		}
-	)
-	-- // slider tbl
-	slider = {
-		["library"] = self.library,
-		["outline"] = outline,
-		["sliderbutton"] = sliderbutton,
-		["title"] = title,
-		["value"] = value,
-		["slide"] = slide,
-		["color"] = color,
-		["max"] = max,
-		["min"] = min,
-		["current"] = def,
-		["measurement"] = measurement,
-		["tick"] = ticking,
-		["rounding"] = rounding,
-		["callback"] = callback
-	}
-	--
-	local function slide()
-		local size = math.clamp(plr:GetMouse().X - slider.color.AbsolutePosition.X ,0 ,slider.color.AbsoluteSize.X)
-		local result = (slider.max - slider.min) / slider.color.AbsoluteSize.X * size + slider.min
-		if slider.rounding then
-			local newres = math.floor(result)
-			value.Text = newres..slider.measurement.."/"..slider.max..slider.measurement
-			slider.current = newres
-			slider.callback(newres)
-			if slider.tick then
-				slider.slide:TweenSize(UDim2.new((1 / slider.color.AbsoluteSize.X) * (slider.color.AbsoluteSize.X / (slider.max - slider.min) * (newres - slider.min)) ,0 ,1 ,0) ,Enum.EasingDirection.Out ,Enum.EasingStyle.Quad ,0.15 ,true)
-			else
-				slider.slide:TweenSize(UDim2.new((1 / slider.color.AbsoluteSize.X) * size ,0 ,1 ,0) ,Enum.EasingDirection.Out ,Enum.EasingStyle.Quad ,0.15 ,true)
+				function section:Slider(sliderInfo)
+					-- // Variables
+					local info = sliderInfo or {}
+					local slider = {
+						state = (info.Default or info.default or info.Def or info.def or 0),
+						min = (info.Minimum or info.minimum or info.Min or info.min or 0),
+						max = (info.Maximum or info.maximum or info.Max or info.max or 10),
+						decimals = (1 / (info.Decimals or info.decimals or info.Tick or info.tick or 0.25)),
+						suffix = (info.Suffix or info.suffix or info.Ending or info.ending or ""),
+						callback = (info.Callback or info.callback or function() end),
+						holding = false
+					}
+					-- // Utilisation
+					local contentHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sectionContentHolder,
+						Size = UDim2.new(1, 0, 0, (info.Name or info.name or info.Text or info.text) and 24 or 10)
+					}})
+					--
+					local sliderButton = utility:Create({Type = "TextButton", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 0, 0, 0),
+						Size = UDim2.new(1, 0, 1, 0),
+						Text = ""
+					}})
+					--
+					if (info.Name or info.name or info.Text or info.text) then
+						local sliderTitle = utility:Create({Type = "TextLabel", Properties = {
+							AnchorPoint = Vector2.new(0, 0),
+							BackgroundTransparency = 1,
+							BorderSizePixel = 0,
+							Parent = contentHolder,
+							Size = UDim2.new(1, -16, 0, 14),
+							Position = UDim2.new(0, 16, 0, 0),
+							Font = "Code",
+							RichText = true,
+							Text = (info.Name or info.name or info.Text or info.text),
+							TextColor3 = Color3.fromRGB(180, 180, 180),
+							TextStrokeTransparency = 0.5,
+							TextSize = 13,
+							TextXAlignment = "Left"
+						}})
+					end
+					--
+					local sliderFrame = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(1, 1, 1),
+						BorderSizePixel = 0,
+						Parent = contentHolder,
+						Position = UDim2.new(0, 16, 0, (info.Name or info.name or info.Text or info.text) and 14 or 0),
+						Size = UDim2.new(1, -32, 0, 10)
+					}})
+					--
+					local sliderInlineGradient = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(63, 63, 63),
+						BorderSizePixel = 0,
+						Parent = sliderFrame,
+						Position = UDim2.new(0, 1, 0, 1),
+						Size = UDim2.new(1, -2, 1, -2)
+					}})
+					--
+					local sliderGradient = utility:Create({Type = "UIGradient", Properties = {
+						Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))}),
+						Rotation = 90,
+						Parent = sliderInlineGradient
+					}})
+					--
+					local sliderSlideHolder = utility:Create({Type = "Frame", Properties = {
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sliderFrame,
+						Position = UDim2.new(0, 1, 0, 1),
+						Size = UDim2.new(1, -2, 1, -2)
+					}})
+					--
+					local sliderSlide = utility:Create({Type = "Frame", Properties = {
+						BackgroundColor3 = Color3.fromRGB(0, 255, 255),
+						BorderSizePixel = 0,
+						Parent = sliderSlideHolder,
+						Position = UDim2.new(0, 0, 0, 0),
+						Size = UDim2.new(0.5, 0, 1, 0)
+					}})
+					--
+					local sliderGradient = utility:Create({Type = "UIGradient", Properties = {
+						Color = ColorSequence.new({ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0,0,0))}),
+						Rotation = 90,
+						Parent = sliderSlide
+					}})
+					--
+					local sliderValue = utility:Create({Type = "TextLabel", Properties = {
+						AnchorPoint = Vector2.new(0.5, 0.25),
+						BackgroundTransparency = 1,
+						BorderSizePixel = 0,
+						Parent = sliderSlide,
+						Size = UDim2.new(0, 10, 0, 14),
+						Position = UDim2.new(1, 0, 0.5, 0),
+						Font = "Code",
+						RichText = true,
+						Text = tostring(slider.state) .. tostring(slider.suffix),
+						TextColor3 = Color3.fromRGB(255, 255, 255),
+						TextStrokeTransparency = 0.5,
+						TextSize = 13,
+						TextXAlignment = "Left"
+					}})
+					-- // Functions / Connections
+					local connection = utility:Connection({Type = sliderButton.MouseButton1Down, Callback = function()
+						slider.holding = true
+						slider:Refresh()
+					end})
+					--
+					local connection2 = utility:Connection({Type = uis.InputEnded, Callback = function()
+						slider.holding = false
+					end})
+					--
+					local connection3 = utility:Connection({Type = uis.InputChanged, Callback = function()
+						if slider.holding then
+							slider:Refresh()
+						end
+					end})
+					-- // Nested Functions
+					function slider:Remove()
+						contentHolder:Remove()
+						slider = nil
+						--
+						utility:RemoveConnection({Connection = connection})
+						connection = nil
+						utility:RemoveConnection({Connection = connection2})
+						connection2 = nil
+						utility:RemoveConnection({Connection = connection3})
+						connection3 = nil
+						--
+						section:Update()
+					end
+					--
+					function slider:Get()
+						return slider.state
+					end
+					--
+					function slider:Set(value)
+						slider.state = math.clamp(math.round(value * slider.decimals) / slider.decimals, slider.min, slider.max)
+						sliderSlide.Size = UDim2.new(1 - ((slider.max - slider.state) / (slider.max - slider.min)), 0, 1, 0)
+						sliderValue.Text = tostring(slider.state) .. tostring(slider.suffix)
+						pcall(slider.callback, slider.state)
+					end
+					--
+					function slider:Refresh()
+						if slider.holding then
+							local mouseLocation = uis:GetMouseLocation()
+							slider:Set(math.clamp(math.floor((slider.min + (slider.max - slider.min) * (math.clamp(mouseLocation.X - sliderSlide.AbsolutePosition.X, 0, sliderSlideHolder.AbsoluteSize.X) / sliderSlideHolder.AbsoluteSize.X)) * slider.decimals) / slider.decimals, slider.min, slider.max))
+						end
+					end
+					-- // Returning + Other
+					section:Update()
+					slider:Set(slider.state)
+					--
+					return slider
+				end
+				-- // Returning + Other
+				return section
 			end
-		else
-			local newres = utility.round(result ,2)
-			value.Text = newres..slider.measurement.."/"..slider.max..slider.measurement
-			slider.current = newres
-			slider.callback(newres)
-			if slider.tick then
-				slider.slide:TweenSize(UDim2.new((1 / slider.color.AbsoluteSize.X) * (slider.color.AbsoluteSize.X / (slider.max - slider.min) * (newres - slider.min)) ,0 ,1 ,0) ,Enum.EasingDirection.Out ,Enum.EasingStyle.Quad ,0.15 ,true)
-			else
-				slider.slide:TweenSize(UDim2.new((1 / slider.color.AbsoluteSize.X) * size ,0 ,1 ,0) ,Enum.EasingDirection.Out ,Enum.EasingStyle.Quad ,0.15 ,true)
-			end
+			-- // Returning + Other
+			page.Tab = tab
+			page.PageHolder = pageHolder
+			page.Left = leftHolder
+			page.Right = rightHolder
+			--
+			window.Pages[#window.Pages + 1] = page
+			window:RefreshTabs()
+			--
+			return page
 		end
+		-- // Returning
+		return window
 	end
-	--
-	sliderbutton.MouseButton1Down:Connect(function()
-		slider.holding = true
-		slide()
-		table.insert(self.library.themeitems["accent"]["BorderColor3"],outline)
-		outline.BorderColor3 = self.library.theme.accent
-	end)
-	--
-	uis.InputChanged:Connect(function()
-		if slider.holding then
-			slide()
-		end
-	end)
-	--
-	uis.InputEnded:Connect(function(Input)
-		if Input.UserInputType.Name == 'MouseButton1' and slider.holding then
-			slider.holding = false
-			outline.BorderColor3 = Color3.fromRGB(12, 12, 12)
-			local find = table.find(self.library.themeitems["accent"]["BorderColor3"],outline)
-			if find then
-				table.remove(self.library.themeitems["accent"]["BorderColor3"],find)
-			end
-		end
-	end)
-	--
-	local pointer = props.pointer or props.Pointer or props.pointername or props.Pointername or props.PointerName or props.pointerName or nil
-	--
-	if pointer then
-		if self.pointers then
-			self.pointers[tostring(pointer)] = slider
-		end
-	end
-	--
-	self.library.labels[#self.library.labels+1] = title
-	self.library.labels[#self.library.labels+1] = value
-	-- // metatable indexing + return
-	setmetatable(slider, sliders)
-	return slider
 end
 --
 function sliders:set(value)
