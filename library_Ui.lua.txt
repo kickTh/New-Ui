@@ -1986,21 +1986,6 @@ end
 				end
 				-- // Returning + Other
 				return section
-			end
-			-- // Returning + Other
-			page.Tab = tab
-			page.PageHolder = pageHolder
-			page.Left = leftHolder
-			page.Right = rightHolder
-			--
-			window.Pages[#window.Pages + 1] = page
-			window:RefreshTabs()
-			--
-			return page
-		end
-		-- // Returning
-		return window
-	end
 end
 --
 function sliders:set(value)
