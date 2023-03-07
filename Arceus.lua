@@ -5,6 +5,17 @@ if not game:IsLoaded() then
 	until game:IsLoaded()
 end
 
+
+do
+	local v = game:GetService("CoreGui")
+	if type(v) ~= 'string' then
+		if v:FindFirstChild("ScreenGui") then
+			v:FindFirstChild("ScreenGui"):Destroy()
+		end
+	end
+end
+
+
 pcall(function()
 	if game:GetService("CoreGui"):FindFirstChild("ScreenGui").ImageButton then
 		game.CoreGui:FindFirstChild("ScreenGui").Enabled = not game.CoreGui:FindFirstChild("ScreenGui").Enabled
